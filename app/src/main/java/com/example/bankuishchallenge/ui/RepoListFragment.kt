@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bankuishchallenge.RepoViewModel
 import com.example.bankuishchallenge.databinding.FragmentRepoListBinding
 import com.example.bankuishchallenge.model.Item
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RepoListFragment : Fragment() {
@@ -28,6 +28,8 @@ class RepoListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle? ): View {
         _binding = FragmentRepoListBinding.inflate(inflater, container, false)
+        createView()
+        initViewModel()
         return binding.root
     }
 
@@ -36,29 +38,23 @@ class RepoListFragment : Fragment() {
         _binding = null
     }
     private fun createView() {
-        recyclerViewAdapter = RecyclerViewAdapter { data -> showCharacterDetails(data) }
-        binding.recyclerView.apply {
-            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerViewAdapter = RecyclerViewAdapter { data -> showRepoDetails(data) }
+        _binding?.recyclerView?.apply {
+            _binding?.recyclerView?.layoutManager = LinearLayoutManager(activity)
             adapter = recyclerViewAdapter
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        createView()
-        initViewModel()
-    }
-
     private fun initViewModel() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-        viewModel.getAllRepositoriesByLanguage().collectLatest{ it ->
+        lifecycleScope.launchWhenStarted {
+        viewModel.getAllRepositoriesByLanguage().collectLatest{
                 recyclerViewAdapter.submitData(it)
             }
         }
     }
 
-    private fun showCharacterDetails(item: Item) {
+    private fun showRepoDetails(item: Item) {
         val action = RepoListFragmentDirections.actionRepoListFragmentToRepoDetailsFragment(item)
-        findNavController().navigate(action)
+        NavHostFragment.findNavController(this).navigate(action)
     }
 }

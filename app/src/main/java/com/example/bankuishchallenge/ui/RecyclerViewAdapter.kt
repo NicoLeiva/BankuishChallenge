@@ -35,14 +35,9 @@ class RecyclerViewAdapter(private val mListener: (Item) -> Unit) :
         private val title: TextView = view.findViewById(R.id.title)
         private val subtitle:TextView = view.findViewById(R.id.subtitle)
         fun bind(data: Item, mListener: (Item) -> Unit){
-            try {
-                Picasso.get().load(data.owner.avatar_url).into(imageView)
-            } catch (e:Exception){
-                println("IMAGE" + e.message)
-            }
+            Picasso.get().load(data.owner.avatar_url).into(imageView)
             title.text = data.name
             subtitle.text = data.description
-
             cardView.setOnClickListener { mListener(data)}
         }
     }

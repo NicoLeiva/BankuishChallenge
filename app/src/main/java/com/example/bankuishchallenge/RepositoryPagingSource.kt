@@ -19,16 +19,19 @@ class RepositoryPagingSource(private val apiService: ApiService):PagingSource<In
         return try {
             val pageNumber = params.key ?: FIRST_PAGE_INDEX
             val response = apiService.getAllRepositoriesByLanguage("kotlin", PAGE_SIZE, pageNumber)
-
-            val nextKey = if (response.body()?.items.isNullOrEmpty()){
+            println("PAGE $pageNumber" )
+            println("RESPONSE $response" )
+           /* val nextKey = if (response.body()?.items.isNullOrEmpty()){
                 null
             } else {
                 pageNumber + (params.loadSize / PAGE_SIZE)
             }
 
+            */
+
             LoadResult.Page(data = response.body()?.items ?: emptyList(),
                 prevKey = if(pageNumber == FIRST_PAGE_INDEX) null else pageNumber,
-                nextKey = nextKey,
+                nextKey = pageNumber +1,
             )
         }
         catch (e: Exception){
@@ -41,5 +44,4 @@ class RepositoryPagingSource(private val apiService: ApiService):PagingSource<In
         private const val FIRST_PAGE_INDEX = 1
         const val PAGE_SIZE = 20
     }
-
 }

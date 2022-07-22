@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 class RepoViewModel(private val repository: IRepoRepositories): ViewModel() {
 
-    fun getAllRepositoriesByLanguage(): Flow<PagingData<Item>> {
+    suspend fun getAllRepositoriesByLanguage(): Flow<PagingData<Item>> {
         return repository.getAllRepositoriesByLanguage().cachedIn(viewModelScope)
     }
 
