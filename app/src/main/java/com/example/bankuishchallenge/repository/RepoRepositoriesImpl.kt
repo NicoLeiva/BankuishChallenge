@@ -12,8 +12,7 @@ import kotlinx.coroutines.flow.Flow
 class RepoRepositoriesImpl(private val apiService:ApiService):IRepoRepositories {
 
    override suspend fun getAllRepositoriesByLanguage(): Flow<PagingData<Item>> {
-        return Pager (config = PagingConfig(pageSize = PAGE_SIZE,
-        enablePlaceholders = true),
+        return Pager (config = PagingConfig(pageSize = PAGE_SIZE),
             pagingSourceFactory = { RepositoryPagingSource(apiService) }).flow
     }
 }
