@@ -5,14 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.bankuishchallenge.RepoViewModel
+import androidx.recyclerview.widget.RecyclerView
 import com.example.bankuishchallenge.databinding.FragmentRepoListBinding
 import com.example.bankuishchallenge.model.Item
-import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RepoListFragment : Fragment() {
@@ -40,21 +37,20 @@ class RepoListFragment : Fragment() {
     private fun createView() {
         recyclerViewAdapter = RecyclerViewAdapter { data -> showRepoDetails(data) }
         _binding?.recyclerView?.apply {
-            _binding?.recyclerView?.layoutManager = LinearLayoutManager(activity)
+            _binding?.recyclerView?.layoutManager = LinearLayoutManager(context)
+            recyclerViewAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             adapter = recyclerViewAdapter
         }
     }
 
-    private fun initViewModel() {
-        lifecycleScope.launchWhenStarted {
-        viewModel.getAllRepositoriesByLanguage().collectLatest{
-                recyclerViewAdapter.submitData(it)
-            }
+    private fun initViewModel(){
+        viewModel.repos.observe(viewLifecycleOwner) {
+            recyclerViewAdapter.submitData(viewLifecycleOwner.lifecycle, it)
         }
     }
 
     private fun showRepoDetails(item: Item) {
         val action = RepoListFragmentDirections.actionRepoListFragmentToRepoDetailsFragment(item)
-        NavHostFragment.findNavController(this).navigate(action)
+        findNavController().navigate(action)
     }
 }

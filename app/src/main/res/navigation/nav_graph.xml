@@ -21,7 +21,6 @@
         tools:layout="@layout/fragment_repo_details" >
         <argument
             android:name="item"
-            app:popUpToInclusive="true"
             app:argType="com.example.bankuishchallenge.model.Item" />
     </fragment>
 </navigation>

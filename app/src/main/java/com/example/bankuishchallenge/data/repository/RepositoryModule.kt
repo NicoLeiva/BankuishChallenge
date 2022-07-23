@@ -1,10 +1,10 @@
-package com.example.bankuishchallenge.repository
+package com.example.bankuishchallenge.data.repository
 
 import org.koin.dsl.module
 
 object RepositoryModule {
     private val repositoryModule = module {
-        single<IRepoRepositories>{
+        single {
             RepoRepositoriesImpl(get())
         }
     }
