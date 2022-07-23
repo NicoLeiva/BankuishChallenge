@@ -2,8 +2,9 @@ package com.example.bankuishchallenge
 
 import android.app.Application
 import com.example.bankuishchallenge.conection.ConnectionModule
-import com.example.bankuishchallenge.repository.RepositoryModule
+import com.example.bankuishchallenge.data.repository.RepositoryModule
 import com.example.bankuishchallenge.ui.UIModules
+import com.example.bankuishchallenge.data.paging.PagingModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
