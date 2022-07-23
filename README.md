@@ -1,4 +1,4 @@
-# BankuishChallenge
+# Bankuish Challenge
 Android App that lists Github repositories by kotlin
 
 ## Tech stack
